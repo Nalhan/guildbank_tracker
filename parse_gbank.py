@@ -6,13 +6,25 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
+
+# Change this to your own folder if you want this to work:    
+# Make sure that it's pointing to the correct account folder. 
+SV_FOLDER = 'C:\Fast Games\World of Retailcraft\World of Warcraft\_retail_\WTF\Account\SILVE\SavedVariables'
+
+
+
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
-# The ID and range of a sample spreadsheet.
+# The ID and range for the spreadsheet. The credentials you're using must have access to the sheet!
 SHEET_ID = '1TaZOz7bSNzUAXsfsEZnNiw_OVl6xZoSLICJQr-FO30o'
 RANGE_NAME = 'DataImport'
 
+
+
+##################################################################################################################
+
+# Handles authentication and returns the authenticated service.
 def getAuth():
     creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
@@ -36,6 +48,7 @@ def getAuth():
     service = build('sheets', 'v4', credentials=creds)
     return service
 
+# Parse the TSM4 SavedVariables to grab cached guild bank info.
 def parseData(filepath):
     flag = False
     data = open(filepath, errors="ignore")
@@ -73,7 +86,7 @@ def main():
     #quantity = [20, 15, 10, 5, 1]
 
     #body = {'values': [itemId, quantity]}
-    body = parseData('C:\Fast Games\World of Retailcraft\World of Warcraft\_retail_\WTF\Account\SILVE\SavedVariables\TradeSkillMaster.lua')
+    body = parseData(SV_FOLDER + '\TradeSkillMaster.lua')
     service = getAuth()
     # Call the Sheets API
     sheet = service.spreadsheets()
